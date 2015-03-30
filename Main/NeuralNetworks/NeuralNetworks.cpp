@@ -135,22 +135,23 @@ int CreateRGB()
 
 DWORD WINAPI ChangeColor(LPVOID *data)
 {
-	static int diff[3] = { 0 }, saveNextColor;
+	static double diff[3] = { 0 };
+	static int saveNextColor;
 	while (1)
 	{
 		saveNextColor = NNoutput(0);
-		diff[0] = (GetRValue(saveNextColor) - GetRValue(nextColor) + 1) / 20;
-		diff[1] = (GetGValue(saveNextColor) - GetGValue(nextColor) + 1) / 20;
-		diff[2] = (GetBValue(saveNextColor) - GetBValue(nextColor) + 1) / 20;
+		diff[0] = (double)(GetRValue(saveNextColor) - GetRValue(nextColor)) / 10.0;
+		diff[1] = (double)(GetGValue(saveNextColor) - GetGValue(nextColor)) / 10.0;
+		diff[2] = (double)(GetBValue(saveNextColor) - GetBValue(nextColor)) / 10.0;
 		
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 10; i++)
 		{
-			nextColor += diff[0];
-			nextColor += diff[1] << 8;
-			nextColor += diff[2] << 16;
+			nextColor += (int)diff[0];
+			nextColor += (int)diff[1] << 8;
+			nextColor += (int)diff[2] << 16;
 			nextColor %= 0xFFFFFF;
 			InvalidateRect(hWnd, &rc, TRUE);
-			Sleep(40);
+			Sleep(20);
 		}
 		nextColor = saveNextColor;
 		InvalidateRect(hWnd, &rc, TRUE);
