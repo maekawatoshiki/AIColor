@@ -1,1 +1,1 @@
-Learn your favorite color to Neural Networks
+Learn your favorite color to Neural Network
