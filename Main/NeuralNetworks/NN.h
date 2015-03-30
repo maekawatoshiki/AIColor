@@ -62,8 +62,6 @@ int init(int learning)
 	{
 		fread(w_i, sizeof(double), (INPUT_NUM + 1)*HIDDEN_NUM, fp);
 		fread(w_o, sizeof(double), (HIDDEN_NUM + 1)*OUTPUT_NUM, fp);
-		MessageBox(0, 0, 0, 0);
-
 		goto BREAK;
 	}
 	srand((unsigned)time(NULL));
