@@ -47,7 +47,7 @@ double w_i[INPUT_NUM + 1][HIDDEN_NUM], w_h[HIDDEN_NUM + 1][HIDDEN_NUM],
 		w_o[HIDDEN_NUM + 1][OUTPUT_NUM];
 double h_back[HIDDEN_NUM + 1], h2_back[HIDDEN_NUM + 1], y_back[OUTPUT_NUM];
 
-int init(int learning)
+int NNLearning(int learning)
 {
 	int learn, sample, i, j, k;
 	double net_input;
@@ -138,12 +138,12 @@ BREAK:
 	return 0;
 }
 
-int Eval(int learning)
+int NNoutput(int learning)
 {
 	int i, j, k, num;
 	int r, g, b;
 	double net_input, tmp;
-	char s[12800] = { 0 };
+	char s[0xFF] = { 0 };
 
 	for (i = 0; i < 1000; i++)
 	{
@@ -184,7 +184,7 @@ int Eval(int learning)
 		r = x[0] * 0xFF;
 		g = x[1] * 0xFF;
 		b = x[2] * 0xFF;
-		if (y[0] > 0.9 && r + g + b > 0xF) break;
+		if (y[0] > 0.95) break;
 	}
 	sprintf(s, "%lf", y[0]);
 	SetWindowText(hWnd, s);
@@ -202,10 +202,10 @@ int gene[12][300];
 int child1[300];
 int child2[300];
 int maxes[12];
-int eval[12];
+int NNoutput[12];
 
 GeneticColor();
-int evaluation();
+int NNoutputuation();
 };
 
 GeneticColor::GeneticColor() :szRGB(3*10*10), geneLen(12)
@@ -217,10 +217,10 @@ gene[i][k] = rand() % 0xFF;
 memset(child1, 0, sizeof(int)  * szRGB);
 memset(child2, 0, sizeof(int) * szRGB);
 memset(maxes, 0, sizeof(int) * geneLen);
-memset(eval, 0, sizeof(int) * geneLen);
+memset(NNoutput, 0, sizeof(int) * geneLen);
 }
 
-int GeneticColor::evaluation()
+int GeneticColor::NNoutputuation()
 {
 int i, k, j;
 int mn1 = 0, mn2 = 0, min1 = 0, min2 = 0,
@@ -228,7 +228,7 @@ mx1 = 0, mx2 = 0, max1 = 0, max2 = 0, minNumber = 0, min = 0;
 
 memset(maxes, 0, sizeof(int) * geneLen);
 for (i = 0; i < geneLen; i++)
-maxes[i] = eval[i];
+maxes[i] = NNoutput[i];
 
 mn1 = mx1 = maxes[0];
 max2 = max1 = min2 = min1 = 0;

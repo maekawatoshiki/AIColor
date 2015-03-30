@@ -135,11 +135,28 @@ int CreateRGB()
 
 DWORD WINAPI ChangeColor(LPVOID *data)
 {
+	static int diff[3] = { 0 }, saveNextColor;
 	while (1)
 	{
-		nextColor = Eval(0);
+		saveNextColor = NNoutput(0);
+		diff[0] = (GetRValue(saveNextColor) - GetRValue(nextColor) + 1) / 20;
+		diff[1] = (GetGValue(saveNextColor) - GetGValue(nextColor) + 1) / 20;
+		diff[2] = (GetBValue(saveNextColor) - GetBValue(nextColor) + 1) / 20;
+		
+		for (int i = 0; i < 20; i++)
+		{
+			nextColor += diff[0];
+			nextColor += diff[1] << 8;
+			nextColor += diff[2] << 16;
+			nextColor %= 0xFFFFFF;
+			InvalidateRect(hWnd, &rc, TRUE);
+			Sleep(40);
+		}
+		nextColor = saveNextColor;
 		InvalidateRect(hWnd, &rc, TRUE);
-		Sleep(3000); w = (time(0) + clock()) ^ (clock() * 0xFFBA781E);
+		Sleep(3000); 
+		if(rand() % 10 == 0) 
+			w = (time(0) + clock()) ^ (clock() * 0xFFBA781E);
 	}
 	ExitThread(0);
 }
@@ -202,7 +219,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		log << "Start of learning\r\n";
 			starttime = clock();
-				init(count);
+				NNLearning(count);
 			endtime = clock();
 		log << "End of learning\r\n" << (endtime - starttime) / 1000.0 << "sec\r\n";
 
