@@ -1,1 +1,1 @@
-"LEARN MY FAVORITE COLOR" 
+Learn your favorite color to Neural Networks
